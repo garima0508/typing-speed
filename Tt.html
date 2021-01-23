@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" , initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Gorditas&display=swap" rel="stylesheet">
+    <title>Typing Test</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            
+        }
+        .mainDiv{
+            position: relative;
+            background: chocolate;
+            width: 100%;
+            height: 100vh;
+        }
+        .centerDiv{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            text-align: center;
+            transform: translate(-50%,-50%);
+        }
+        h1{
+            text-transform: capitalize;
+            text-align: center;
+            margin-bottom: 30px;
+            color: black;
+            box-shadow: 1px 2px 3px  rgb(138, 43, 8);   
+            font-family: 'Gorditas', cursive;
+        }
+        h2{
+            text-align: center;
+        }
+        textarea{
+            background-color: black;
+            border-radius: 20px;
+            border: 20px solid rgb(138, 43, 8);
+            color: white;
+            font-size: 1.5rem;
+            outline: none;
+        }
+        .mainbtn{
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 5px solid  rgb(138, 43, 8);
+            font-size: 1.2rem;
+            color: black;
+            background-color:  rgb(158, 53, 15);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Welcome to Typing Speed Test</h1>
+            <br/>
+            <h2 id="msg"></h2>
+            <textarea id="myMsg" cols="100" rows="10" placeholder="Get Set Go!!"></textarea>
+            <br/>
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+</body>
+<script>
+    arr=[
+        "My name is beep beep beep",
+        "My email id is beep beep beep",
+        "My phone no. is beep beep beep",
+        "My password is beep beep beep"
+    ]
+    const msg= document.getElementById('msg');
+    const myMsg= document.getElementById('myMsg');
+    const btn= document.getElementById('btn');
+    let startTime, endTime;
+    const playGame=()=>{
+        let randomNumber= Math.floor(Math.random()*arr.length);
+        msg.innerText=arr[randomNumber];
+        let date =new Date();
+        startTime=date.getTime();
+        btn.innerText='Done';
+    }
+    const endGame=()=>{
+        let date =new Date();
+        endTime=date.getTime();
+        let totalTime= ((endTime-startTime)/1000);
+        console.log(totalTime);
+        let typedStr= myMsg.value;
+        let noOfWords= wordCounter(typedStr);
+        console.log(noOfWords);
+        let speed= Math.round(noOfWords/totalTime)*60;
+        let result= "Your Typing Speed is "+speed+" words per minute";
+        result+=error(msg.innerText,typedStr);
+        msg.innerText=result;
+        
+    }
+    const error=(str1,str2)=>{
+        let words1= str1.split(' ');
+        let words2= str2.split(' ');
+        let c=0;
+        words1.map((val,index)=>{
+            if(val==words2[index])
+            c++;
+        })
+        console.log(c);
+        let errorWords=words1.length-c;
+        return(" and you typed "+errorWords+" words wrong!!!!!");
+    }
+    const wordCounter=(str)=>{
+        let res= str.split(' ').length;
+        return res;
+    }
+    btn.addEventListener('click',function(){
+        if(btn.innerText=='Start'){
+            myMsg.disabled=false;
+            myMsg.value='';
+            playGame();
+        }else if(btn.innerText=='Done'){
+            myMsg.disabled=true;
+            btn.innerText='Start';
+            endGame();
+        }
+    })
+</script>
+</html>
